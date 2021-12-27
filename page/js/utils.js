@@ -5,7 +5,6 @@ function getRandomPosition(child) {
   const parentRect = child.parentNode.getBoundingClientRect();
   const left = Math.random() * (parentRect.width - childRect.width);
   const top = Math.random() * (parentRect.height - childRect.height);
-  console.log(childRect, parentRect);
   return { left: left, top: top };
 }
 
@@ -23,4 +22,15 @@ function getContrastYIQ(hexcolor) {
   return (yiq >= 128) ? 'black' : 'white';
 }
 
-export { getRandomPosition, getRandomColor };
+function doOnRandomInterval(doFunction) {
+
+  function periodicFunction() {
+    doFunction();
+    setTimeout(periodicFunction, Math.random() * 1000 + 100);
+    // setTimeout(periodicFunction, 1000);
+  }
+  
+  periodicFunction()
+}
+
+export { getRandomPosition, getRandomColor, doOnRandomInterval };
