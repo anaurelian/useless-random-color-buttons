@@ -1,6 +1,7 @@
 {
   "name": "useless random color buttons",
   "short_name": "useless random color buttons",
+  "start_url": "/",
   "icons": [
     {
       "src": "/img/manifest/android-chrome-192x192.png",
