@@ -15,15 +15,19 @@
   <link href="/css/output.css" rel="stylesheet">
 </head>
 
-<body class="antialiased bg-white h-screen text-black">
-  <header class="p-3 text-center z-50 text-xl">
+<body class="antialiased bg-black h-screen select-none text-white">
+  <header class="p-3 text-center text-xl">
     <p><b id="created-counter">0</b> created, <b id="clicked-counter">0</b> clicked, <b id="remaining-counter">0</b> remaining</p>
     <p>
-      <button id="slower-button" class="underline px-1">slower</button>
+      <button id="slower-button" class="action-button">slower</button>
       <span id="delay">1000</span>ms
-      <button id="faster-button" class="underline px-1">faster</button>
+      <button id="faster-button" class="action-button">faster</button>
     </p>
   </header>
+
+  <footer class="absolute bottom-0 left-0 p-3 right-0 text-center text-sm">
+    <p><a href="https://github.com/anaurelian/useless-random-color-buttons" target="_blank" class="action-button">view source</a></p>
+  </footer>
 
   <script type="module" src="/js/app.js"></script>
 

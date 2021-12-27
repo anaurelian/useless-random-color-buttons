@@ -11,21 +11,10 @@
     @apply border-2 border-current py-2 rounded-md text-2xl w-36;
   }
 
-  @keyframes display-fade {
-    0% {
-        display: none;
-        opacity: 0;
-    }
-
-    1% {
-        display: block;
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
+  .action-button {
+    @apply px-1 underline active:font-bold;
   }
+
 }
 
 @layer utilities {
