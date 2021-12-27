@@ -16,8 +16,13 @@
 </head>
 
 <body class="antialiased bg-white h-screen text-black">
-  <header class="p-3 text-center z-50">
+  <header class="p-3 text-center z-50 text-xl">
     <p><b id="created-counter">0</b> created, <b id="clicked-counter">0</b> clicked, <b id="remaining-counter">0</b> remaining</p>
+    <p>
+      <button id="slower-button" class="underline px-1">slower</button>
+      <span id="delay">1000</span>ms
+      <button id="faster-button" class="underline px-1">faster</button>
+    </p>
   </header>
 
   <script type="module" src="/js/app.js"></script>

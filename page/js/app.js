@@ -4,15 +4,17 @@
 
 'use strict';
 
-import { getRandomPosition, getRandomColor, doOnRandomInterval } from '/js/utils.js';
+import { getRandomPosition, getRandomColor } from '/js/utils.js';
 
 class App {
 
+  #delay = 1000;
   #createdCounter = 0;
   #clickedCounter = 0;
   #createdCounterEl;
   #clickedCounterEl;
   #remainingCounterEl;
+  #delayEl;
 
   /**
    * Init the application.
@@ -21,13 +23,29 @@ class App {
     this.#createdCounterEl = document.querySelector('#created-counter');
     this.#clickedCounterEl = document.querySelector('#clicked-counter');
     this.#remainingCounterEl = document.querySelector('#remaining-counter');
-    doOnRandomInterval(() => this.#addButton());
+    this.#delayEl = document.querySelector('#delay');
+
+    document.querySelector('#slower-button').addEventListener('click', (e) => {
+      this.#delay += 100;
+      this.#updateDelay();
+    });
+
+    document.querySelector('#faster-button').addEventListener('click', (e) => {
+      if (this.#delay > 100) this.#delay -= 100;
+      this.#updateDelay();
+    });
+
+    this.#addButton();
   }
 
   #updateCounters() {
     this.#createdCounterEl.innerText = this.#createdCounter;
     this.#clickedCounterEl.innerText = this.#clickedCounter;
     this.#remainingCounterEl.innerText = this.#createdCounter - this.#clickedCounter;
+  }
+
+  #updateDelay() {
+    this.#delayEl.innerText = this.#delay;
   }
 
   #addButton() {
@@ -38,6 +56,7 @@ class App {
     button.innerText = color.backcolor;
     button.style.backgroundColor = color.backcolor;
     button.style.color = color.textcolor;
+    button.style.zIndex = 0;
 
     button.addEventListener('click', (e) => {
       this.#clickedCounter++;
@@ -56,6 +75,8 @@ class App {
 
     this.#createdCounter++;
     this.#updateCounters();
+
+    setTimeout(() => this.#addButton(), this.#delay);
   }
 }
 

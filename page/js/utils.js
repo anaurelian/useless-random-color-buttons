@@ -22,15 +22,4 @@ function getContrastYIQ(hexcolor) {
   return (yiq >= 128) ? 'black' : 'white';
 }
 
-function doOnRandomInterval(doFunction) {
-
-  function periodicFunction() {
-    doFunction();
-    setTimeout(periodicFunction, Math.random() * 1000 + 100);
-    // setTimeout(periodicFunction, 1000);
-  }
-  
-  periodicFunction()
-}
-
-export { getRandomPosition, getRandomColor, doOnRandomInterval };
+export { getRandomPosition, getRandomColor };
