@@ -9,12 +9,13 @@ import { getRandomPosition, getRandomColor } from '/js/utils.js';
 class App {
 
   #delay = 1000;
+  #winOnClickAll = true;
   #createdCounter = 0;
   #clickedCounter = 0;
   #createdCounterEl;
   #clickedCounterEl;
   #remainingCounterEl;
-  #delayEl;
+  #addButtonIntervalID;
 
   /**
    * Initializes the application object.
@@ -24,17 +25,6 @@ class App {
     this.#createdCounterEl = document.querySelector('#created-counter');
     this.#clickedCounterEl = document.querySelector('#clicked-counter');
     this.#remainingCounterEl = document.querySelector('#remaining-counter');
-    this.#delayEl = document.querySelector('#delay');
-
-    // Initialize slower/faster buttons
-    document.querySelector('#slower-button').addEventListener('click', (e) => {
-      this.#delay += 100;
-      this.#updateDelay();
-    });
-    document.querySelector('#faster-button').addEventListener('click', (e) => {
-      if (this.#delay > 100) this.#delay -= 100;
-      this.#updateDelay();
-    });
 
     // Set a random button color
     const configSectionEl = document.querySelector('#config-section');
@@ -49,38 +39,42 @@ class App {
       // Add initial buttons
       this.#addInitialButtons();
 
-      // Add the first button
-      this.#addButton();
+      this.#delay = document.querySelector('#config-delay').value;
+
+      // Start adding buttons
+      this.#addButtonIntervalID = setInterval(() => this.#addButton(), this.#delay);
     });
   }
 
   #addInitialButtons() {
     const initialCount = document.querySelector('#config-initial').value;
     for (let i = 0; i < initialCount; i++) {
-      this.#addButton(false);
+      this.#addButton(true);
     }
+    this.#updateCounters();
   }
 
   /**
    * Updates the counters.
    */
   #updateCounters() {
+    const remainingCounter = this.#createdCounter - this.#clickedCounter;
+
     this.#createdCounterEl.innerText = this.#createdCounter;
     this.#clickedCounterEl.innerText = this.#clickedCounter;
-    this.#remainingCounterEl.innerText = this.#createdCounter - this.#clickedCounter;
-  }
+    this.#remainingCounterEl.innerText = remainingCounter;
 
-  /**
-   * Updates the delay value.
-   */
-  #updateDelay() {
-    this.#delayEl.innerText = this.#delay;
+    if (this.#winOnClickAll && (remainingCounter == 0)) {
+      this.#showWonScreen();
+      clearInterval(this.#addButtonIntervalID);
+    }
+    // document.title = `${this.#createdCounter} created, ${this.#clickedCounter} clicked, ${this.#createdCounter - this.#clickedCounter} remaining`;
   }
 
   /**
    * Adds a new random color button.
    */
-  #addButton(schedule = true) {
+  #addButton(initial = false) {
     const button = document.createElement('button');
     button.classList.add('absolute', 'color-button');
 
@@ -112,12 +106,13 @@ class App {
 
     // Update the created counter
     this.#createdCounter++;
-    this.#updateCounters();
-
-    // Schedule the next button add
-    if (schedule) {
-      setTimeout(() => this.#addButton(), this.#delay);
+    if (!initial) {
+      this.#updateCounters();
     }
+  }
+
+  #showWonScreen() {
+    document.querySelector('#won-section').classList.remove('hidden');
   }
 }
 
