@@ -7,6 +7,10 @@
 
 @layer components {
 
+  .text-input {
+    @apply bg-transparent border border-current rounded pl-2 pr-1 py-1;
+  }
+
   .color-button {
     @apply border-2 border-current py-2 rounded-md text-2xl w-36;
   }

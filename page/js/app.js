@@ -36,8 +36,29 @@ class App {
       this.#updateDelay();
     });
 
-    // Start by adding the first button
-    this.#addButton();
+    // Set a random button color
+    const configSectionEl = document.querySelector('#config-section');
+    const color = getRandomColor();
+    configSectionEl.style.backgroundColor = color.backcolor;
+    configSectionEl.style.color = color.textcolor;
+
+    document.querySelector('#config-start').addEventListener('click', (e) => {
+      configSectionEl.classList.add('hidden');
+      document.querySelector('main').classList.remove('hidden');
+
+      // Add initial buttons
+      this.#addInitialButtons();
+
+      // Add the first button
+      this.#addButton();
+    });
+  }
+
+  #addInitialButtons() {
+    const initialCount = document.querySelector('#config-initial').value;
+    for (let i = 0; i < initialCount; i++) {
+      this.#addButton(false);
+    }
   }
 
   /**
@@ -59,7 +80,7 @@ class App {
   /**
    * Adds a new random color button.
    */
-  #addButton() {
+  #addButton(schedule = true) {
     const button = document.createElement('button');
     button.classList.add('absolute', 'color-button');
 
@@ -94,7 +115,9 @@ class App {
     this.#updateCounters();
 
     // Schedule the next button add
-    setTimeout(() => this.#addButton(), this.#delay);
+    if (schedule) {
+      setTimeout(() => this.#addButton(), this.#delay);
+    }
   }
 }
 

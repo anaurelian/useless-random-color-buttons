@@ -17,29 +17,61 @@
 </head>
 
 <body class="antialiased bg-black h-screen select-none text-white touch-manipulation">
-  <header class="p-3 text-center text-xl">
-    <p><b id="created-counter">0</b> created, <b id="clicked-counter">0</b> clicked, <b id="remaining-counter">0</b> remaining</p>
-    <p>
-      <button id="slower-button" class="action-button">slower</button>
-      <span id="delay">1000</span>ms
-      <button id="faster-button" class="action-button">faster</button>
-    </p>
-  </header>
+  <section id="config-section" class="flex justify-center h-full items-center">
+    <div class="space-y-6">
+      <label class="block">
+        <span>Number of initial buttons:</span>
+        <input type="number" class="block mt-1 text-input" id="config-initial" min="0" value="1000" />
+      </label>
 
-  <footer class="absolute bottom-0 left-0 p-3 right-0 text-center text-sm">
+      <label class="block">
+        <span class="block">Add a new button every</span>
+        <input type="number" class="mt-1 text-input" id="config-delay" min="0" value="1000" />
+        <span class="ml-1">ms</span>
+      </label>
+
+      <div>
+        <label class="block">
+          <input type="radio" class="" name="game-mode" checked />
+          <span>Win when you click all buttons</span>
+        </label>
+        <label class="block mt-1">
+          <input type="radio" class="" name="game-mode" />
+          <span>Freeplay mode</span>
+        </label>
+      </div>
+        
+      <p>
+        <button id="config-start" class="color-button w-full">Start</button>
+      </p>
+    </div>
+  </section>
+
+  <main class="hidden">
+    <header class="p-3 text-center text-xl">
+      <p><b id="created-counter">0</b> created, <b id="clicked-counter">0</b> clicked, <b id="remaining-counter">0</b> remaining</p>
+      <p>
+        <button id="slower-button" class="action-button">slower</button>
+        <span id="delay">1000</span>ms
+        <button id="faster-button" class="action-button">faster</button>
+      </p>
+    </header>
+  </main>
+
+  <!-- <footer class="absolute bottom-0 left-0 p-3 right-0 text-center text-sm">
     <p><a href="https://github.com/anaurelian/useless-random-color-buttons" target="_blank" class="action-button">view source</a></p>
-  </footer>
+  </footer> -->
 
   <script type="module" src="/js/app.js"></script>
 
-  <script>
+  <!-- <script>
     // Register service worker
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("/sw.js");
       });
     }
-</script>
+  </script> -->
 
 </body>
 
