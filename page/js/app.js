@@ -9,7 +9,7 @@ import { getRandomPosition, getRandomColor } from '/js/utils.js';
 class App {
 
   #delay = 1000;
-  #winOnClickAll = true;
+  #winOnNoRemains = true;
   #createdCounter = 0;
   #clickedCounter = 0;
   #createdCounterEl;
@@ -26,20 +26,15 @@ class App {
     this.#clickedCounterEl = document.querySelector('#clicked-counter');
     this.#remainingCounterEl = document.querySelector('#remaining-counter');
 
-    // Set a random button color
-    const configSectionEl = document.querySelector('#config-section');
-    const color = getRandomColor();
-    configSectionEl.style.backgroundColor = color.backcolor;
-    configSectionEl.style.color = color.textcolor;
-
     document.querySelector('#config-start').addEventListener('click', (e) => {
-      configSectionEl.classList.add('hidden');
+      document.querySelector('#config-section').classList.add('hidden');
       document.querySelector('main').classList.remove('hidden');
 
       // Add initial buttons
       this.#addInitialButtons();
 
       this.#delay = document.querySelector('#config-delay').value;
+      this.#winOnNoRemains = document.querySelector('#config-win-on-no-remains').checked;
 
       // Start adding buttons
       this.#addButtonIntervalID = setInterval(() => this.#addButton(), this.#delay);
@@ -49,9 +44,8 @@ class App {
   #addInitialButtons() {
     const initialCount = document.querySelector('#config-initial').value;
     for (let i = 0; i < initialCount; i++) {
-      this.#addButton(true);
+      setTimeout(() => this.#addButton());
     }
-    this.#updateCounters();
   }
 
   /**
@@ -64,7 +58,7 @@ class App {
     this.#clickedCounterEl.innerText = this.#clickedCounter;
     this.#remainingCounterEl.innerText = remainingCounter;
 
-    if (this.#winOnClickAll && (remainingCounter == 0)) {
+    if (this.#winOnNoRemains && (remainingCounter == 0)) {
       this.#showWonScreen();
       clearInterval(this.#addButtonIntervalID);
     }
@@ -74,7 +68,7 @@ class App {
   /**
    * Adds a new random color button.
    */
-  #addButton(initial = false) {
+  #addButton() {
     const button = document.createElement('button');
     button.classList.add('absolute', 'color-button');
 
@@ -106,9 +100,7 @@ class App {
 
     // Update the created counter
     this.#createdCounter++;
-    if (!initial) {
-      this.#updateCounters();
-    }
+    this.#updateCounters();
   }
 
   #showWonScreen() {
