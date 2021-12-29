@@ -6,7 +6,7 @@
 
 import { getRandomPosition, getRandomColor, formatDuration } from '/js/utils.js';
 
-let winOnNoRemains = true;
+let winOnZeroButtons = true;
 let createdCounter = 0;
 let clickedCounter = 0;
 
@@ -14,26 +14,17 @@ let addButtonIntervalID;
 let updateStatsIntervalID;
 
 /**
- * Initializes the application object.
+ * Initializes the page.
  */
 function initPage() {
-  // Cache some frequently used DOM elements
-
-  document.querySelector('#config-start').addEventListener('click', (e) => start());
-}
-
-function start() {
-  document.querySelector('#config-section').classList.add('hidden');
-  document.querySelector('main').classList.remove('hidden');
-
   // Add initial buttons
   addInitialButtons();
 
-  let delay = document.querySelector('#config-delay').value;
-  winOnNoRemains = document.querySelector('#config-win-on-no-remains').checked;
+  const addButtonDelay = localStorage.getItem('addButtonDelay') ?? 1000;
+  winOnZeroButtons = localStorage.getItem('winOnZeroButtons') === 'true' ?? true;
 
   // Start adding buttons
-  addButtonIntervalID = setInterval(() => addButton(), delay);
+  addButtonIntervalID = setInterval(() => addButton(), addButtonDelay);
 
   startUpdatingStats();
 
@@ -105,7 +96,7 @@ function addButton() {
 }
 
 function addInitialButtons() {
-  const initialCount = document.querySelector('#config-initial').value;
+  const initialCount = localStorage.getItem('initialCount') ?? 100;
   for (let i = 0; i < initialCount; i++) {
     setTimeout(() => addButton());
   }
@@ -127,7 +118,7 @@ function updateCounters() {
   updateCounters.remainingEl.textContent = remainingCounter;
 
   // Check if user has won
-  if (winOnNoRemains && (remainingCounter == 0)) {
+  if (winOnZeroButtons && (remainingCounter == 0)) {
     win();
   }
   // document.title = `${createdCounter} created, ${clickedCounter} clicked, ${createdCounter - clickedCounter} remaining`;
@@ -143,6 +134,6 @@ function win() {
 
 
 /**
- * Initialize the application in the window load event.
+ * Initialize the page in the window load event.
  */
  window.addEventListener("load", initPage);
