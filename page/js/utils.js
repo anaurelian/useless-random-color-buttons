@@ -36,4 +36,8 @@ function getContrastYIQ(hexcolor) {
   return (yiq >= 128) ? 'black' : 'white';
 }
 
-export { getRandomPosition, getRandomColor };
+function formatDuration(ms) {
+  return new Date(ms).toISOString().substring(11, 19);
+}
+
+export { getRandomPosition, getRandomColor, formatDuration };

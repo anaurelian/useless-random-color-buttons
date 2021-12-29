@@ -54,27 +54,29 @@
   </section>
 
   <main class="hidden">
-    <header class="p-3 text-center text-xl">
-      <ul class="grid grid-cols-5">
+    <header class="p-3 text-center">
+      <ul class="grid grid-cols-3 md:grid-cols-5 gap-8">
+      <!-- <ul class="flex flex-wrap justify-center gap-4"> -->
         <li>
           <span class="block">created</span>
-          <b id="stats-created">0</b>
+          <b id="stats-created" class="text-2xl">0</b>
         </li>
         <li>
           <span class="block">clicked</span>
-          <b id="stats-clicked">0</b>
+          <b id="stats-clicked" class="text-2xl">0</b>
         </li>
         <li>
           <span class="block">remaining</span>
-          <b id="stats-remaining">0</b>
+          <b id="stats-remaining" class="text-2xl">0</b>
         </li>
         <li>
           <span class="block">elapsed</span>
-          <b id="elapsed-stats">00:00:00</b>
+          <b id="stats-elapsed" class="text-2xl">00:00:00</b>
         </li>
         <li>
-          <span class="block">cps / max cps</span>
-          <b id="clickrate-stats">0</b>
+          <span class="block">cps/avg/max</span>
+          <!-- <b id="stats-clickrate">2<span class="text-xs font-extralight">.45</span>/4<span class="text-xs font-extralight">.80</span>/6</b> -->
+          <b id="stats-clickrate" class="text-2xl">0/0/0</b>
         </li>
       </ul>
     </header>

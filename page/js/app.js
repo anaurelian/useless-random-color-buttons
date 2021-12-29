@@ -4,35 +4,20 @@
 
 'use strict';
 
-import { getRandomPosition, getRandomColor } from '/js/utils.js';
+import { getRandomPosition, getRandomColor, formatDuration } from '/js/utils.js';
 
-
-
-let delay = 1000;
 let winOnNoRemains = true;
 let createdCounter = 0;
 let clickedCounter = 0;
-let prevClickedCounter = 0;
-
-let maxClickrate = 0;
-
-let startTime;
-let prevTime;
-
-/**
- * Cached DOM elements
- */
-let clickrateStatsEl;
 
 let addButtonIntervalID;
+let updateStatsIntervalID;
 
 /**
  * Initializes the application object.
  */
 function initPage() {
   // Cache some frequently used DOM elements
-
-  clickrateStatsEl = document.querySelector('#clickrate-stats');
 
   document.querySelector('#config-start').addEventListener('click', (e) => start());
 }
@@ -44,24 +29,41 @@ function start() {
   // Add initial buttons
   addInitialButtons();
 
-  delay = document.querySelector('#config-delay').value;
+  let delay = document.querySelector('#config-delay').value;
   winOnNoRemains = document.querySelector('#config-win-on-no-remains').checked;
 
   // Start adding buttons
   addButtonIntervalID = setInterval(() => addButton(), delay);
 
-  prevTime = Date.now();
-  setInterval(() => {
-    const clickrate = (clickedCounter - prevClickedCounter) * 1000 / (Date.now() - prevTime);
-    
-    prevClickedCounter = clickedCounter;
-    prevTime = Date.now();
+  startUpdatingStats();
 
+}
+
+function startUpdatingStats() {
+  const elapsedEl = document.querySelector('#stats-elapsed');
+  const clickrateEl = document.querySelector('#stats-clickrate');
+
+  let prevClickedCounter = 0;
+  let startTime = Date.now();
+  let prevTime = startTime;
+  let maxClickrate = 0;
+
+  updateStatsIntervalID = setInterval(() => {
+    const nowTime = Date.now();
+
+    const clickrate = (clickedCounter - prevClickedCounter) * 1000 / (nowTime - prevTime);
+    const avgClickrate = clickedCounter * 1000 / (nowTime - startTime);
     maxClickrate = Math.max(maxClickrate, clickrate);
 
-    clickrateStatsEl.textContent = `${clickrate.toFixed(2)} / ${maxClickrate.toFixed(2)}`;
+    elapsedEl.textContent = formatDuration(nowTime - startTime);
+    // clickrateEl.textContent = `${clickrate.toFixed(2)} / ${avgClickrate.toFixed(2)} / ${maxClickrate.toFixed(2)}`;
+    clickrateEl.textContent = `${clickrate.toFixed(0)}/${avgClickrate.toFixed(0)}/${maxClickrate.toFixed(0)}`;
+
+    prevClickedCounter = clickedCounter;
+    prevTime = nowTime;
   }, 1000);
 }
+
 
 /**
  * Adds a new random color button.
@@ -72,7 +74,7 @@ function addButton() {
 
   // Set a random button color
   const color = getRandomColor();
-  button.innerText = color.backcolor;
+  button.textContent = color.backcolor;
   button.style.backgroundColor = color.backcolor;
   button.style.color = color.textcolor;
 
@@ -113,31 +115,28 @@ function addInitialButtons() {
  */
 function updateCounters() {
 
-  if (typeof updateCounters.createdEl === "undefined") {
-    updateCounters.createdEl = document.querySelector('#stats-created');
-  }
-  if (typeof updateCounters.clickedEl === "undefined") {
-    updateCounters.clickedEl = document.querySelector('#stats-clicked');
-  }
-  if (typeof updateCounters.remainingEl === "undefined") {
-    updateCounters.remainingEl = document.querySelector('#stats-remaining');
-  }
-
   const remainingCounter = createdCounter - clickedCounter;
 
+  // Update counter stats
+  updateCounters.createdEl ??= document.querySelector('#stats-created');
   updateCounters.createdEl.textContent = createdCounter;
+  updateCounters.clickedEl ??= document.querySelector('#stats-clicked');
   updateCounters.clickedEl.textContent = clickedCounter;
+  updateCounters.remainingEl ??= document.querySelector('#stats-remaining');
   updateCounters.remainingEl.textContent = remainingCounter;
 
+  // Check if user has won
   if (winOnNoRemains && (remainingCounter == 0)) {
-    showWinScreen();
-    clearInterval(addButtonIntervalID);
+    win();
   }
   // document.title = `${createdCounter} created, ${clickedCounter} clicked, ${createdCounter - clickedCounter} remaining`;
 }
 
 
-function showWinScreen() {
+function win() {
+  clearInterval(addButtonIntervalID);
+  clearInterval(updateStatsIntervalID);
+
   document.querySelector('#win-section').classList.remove('hidden');
 }
 
