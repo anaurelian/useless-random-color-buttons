@@ -1,9 +1,13 @@
-const cacheName = 'useless-random-color-buttons-v3';
+const cacheName = 'useless-random-color-buttons-v4';
 const contentToCache = [
   '/',
   '/index.html',
+  '/game/index.html',
+  '/settings/index.html',
   '/css/output.css',
   '/js/app.js',
+  '/js/game.js',
+  '/js/settings.js',
   '/js/utils.js',
 ];
 
