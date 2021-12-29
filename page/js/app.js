@@ -12,9 +12,21 @@ class App {
   #winOnNoRemains = true;
   #createdCounter = 0;
   #clickedCounter = 0;
+  #prevClickedCounter = 0;
+
+  #maxClickrate = 0;
+
+  #startTime;
+  #prevTime;
+
+  /**
+   * Cached DOM elements
+   */
   #createdCounterEl;
   #clickedCounterEl;
   #remainingCounterEl;
+  #clickrateStatsEl;
+
   #addButtonIntervalID;
 
   /**
@@ -25,20 +37,35 @@ class App {
     this.#createdCounterEl = document.querySelector('#created-counter');
     this.#clickedCounterEl = document.querySelector('#clicked-counter');
     this.#remainingCounterEl = document.querySelector('#remaining-counter');
+    this.#clickrateStatsEl = document.querySelector('#clickrate-stats');
 
-    document.querySelector('#config-start').addEventListener('click', (e) => {
-      document.querySelector('#config-section').classList.add('hidden');
-      document.querySelector('main').classList.remove('hidden');
+    document.querySelector('#config-start').addEventListener('click', (e) => this.#start());
+  }
 
-      // Add initial buttons
-      this.#addInitialButtons();
+  #start() {
+    document.querySelector('#config-section').classList.add('hidden');
+    document.querySelector('main').classList.remove('hidden');
 
-      this.#delay = document.querySelector('#config-delay').value;
-      this.#winOnNoRemains = document.querySelector('#config-win-on-no-remains').checked;
+    // Add initial buttons
+    this.#addInitialButtons();
 
-      // Start adding buttons
-      this.#addButtonIntervalID = setInterval(() => this.#addButton(), this.#delay);
-    });
+    this.#delay = document.querySelector('#config-delay').value;
+    this.#winOnNoRemains = document.querySelector('#config-win-on-no-remains').checked;
+
+    // Start adding buttons
+    this.#addButtonIntervalID = setInterval(() => this.#addButton(), this.#delay);
+
+    this.#prevTime = Date.now();
+    setInterval(() => {
+      const clickrate = (this.#clickedCounter - this.#prevClickedCounter) * 1000 / (Date.now() - this.#prevTime);
+      
+      this.#prevClickedCounter = this.#clickedCounter;
+      this.#prevTime = Date.now();
+
+      this.#maxClickrate = Math.max(this.#maxClickrate, clickrate);
+
+      this.#clickrateStatsEl.textContent = `${clickrate.toFixed(2)} / ${this.#maxClickrate.toFixed(2)}`;
+    }, 1000);
   }
 
   #addInitialButtons() {

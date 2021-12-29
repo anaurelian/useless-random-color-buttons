@@ -27,7 +27,7 @@
 
       <label class="block">
         <span>start with</span>
-        <input type="number" class="number-input" id="config-initial" min="0" value="1000" />
+        <input type="number" class="number-input" id="config-initial" min="0" value="10" />
         <span>buttons</span>
       </label>
 
@@ -55,7 +55,28 @@
 
   <main class="hidden">
     <header class="p-3 text-center text-xl">
-      <p><b id="created-counter">0</b> created, <b id="clicked-counter">0</b> clicked, <b id="remaining-counter">0</b> remaining</p>
+      <ul class="grid grid-cols-5">
+        <li>
+          <span class="block">created</span>
+          <b id="created-counter">0</b>
+        </li>
+        <li>
+          <span class="block">clicked</span>
+          <b id="clicked-counter">0</b>
+        </li>
+        <li>
+          <span class="block">remaining</span>
+          <b id="remaining-counter">0</b>
+        </li>
+        <li>
+          <span class="block">elapsed</span>
+          <b id="elapsed-stats">00:00:00</b>
+        </li>
+        <li>
+          <span class="block">cps / max cps</span>
+          <b id="clickrate-stats">0</b>
+        </li>
+      </ul>
     </header>
   </main>
 
@@ -65,14 +86,14 @@
 
   <script type="module" src="/js/app.js"></script>
 
-  <script>
+  <!-- <script>
     // Register service worker
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("/sw.js");
       });
     }
-  </script>
+  </script> -->
 
 </body>
 
