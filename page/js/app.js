@@ -41,7 +41,8 @@ function start() {
 
 function startUpdatingStats() {
   const elapsedEl = document.querySelector('#stats-elapsed');
-  const clickrateEl = document.querySelector('#stats-clickrate');
+  const avgCpsEl = document.querySelector('#stats-avg-cps');
+  const maxCpsEl = document.querySelector('#stats-max-cps');
 
   let prevClickedCounter = 0;
   let startTime = Date.now();
@@ -56,8 +57,8 @@ function startUpdatingStats() {
     maxClickrate = Math.max(maxClickrate, clickrate);
 
     elapsedEl.textContent = formatDuration(nowTime - startTime);
-    // clickrateEl.textContent = `${clickrate.toFixed(2)} / ${avgClickrate.toFixed(2)} / ${maxClickrate.toFixed(2)}`;
-    clickrateEl.textContent = `${clickrate.toFixed(0)}/${avgClickrate.toFixed(0)}/${maxClickrate.toFixed(0)}`;
+    avgCpsEl.textContent = avgClickrate.toFixed(2);
+    maxCpsEl.textContent = maxClickrate.toFixed(2);
 
     prevClickedCounter = clickedCounter;
     prevTime = nowTime;
